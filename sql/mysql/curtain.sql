@@ -769,7 +769,8 @@ VALUES
 (3742, 7,  '已打包',   'DABAO',        'zc_order_status', 0, 'warning', '', '生产完成，已打包备货',           'admin', NOW(), 'admin', NOW(), b'0'),
 (3743, 8,  '部分发货', 'BUFEN_FAHUO',  'zc_order_status', 0, 'warning', '', '部分窗帘行/产品行已发货',        'admin', NOW(), 'admin', NOW(), b'0'),
 (3744, 9,  '已发货',   'FAHUO',        'zc_order_status', 0, 'success', '', '货物已发出，等待签收',           'admin', NOW(), 'admin', NOW(), b'0'),
-(3745, 10, '完成',     'COMPLETE',     'zc_order_status', 0, 'success', '', '订单履约完成',                   'admin', NOW(), 'admin', NOW(), b'0');
+(3745, 10, '完成',     'COMPLETE',     'zc_order_status', 0, 'success', '', '订单履约完成',                   'admin', NOW(), 'admin', NOW(), b'0'),
+(3746, 11, '废弃',     'DISCARDED',    'zc_order_status', 0, 'danger',  '', '订单已标记废弃',                 'admin', NOW(), 'admin', NOW(), b'0');
 
 -- ----------------------------
 -- 字典：订单支付状态（zc_order_pay_status） id=2302, data=3704~3706

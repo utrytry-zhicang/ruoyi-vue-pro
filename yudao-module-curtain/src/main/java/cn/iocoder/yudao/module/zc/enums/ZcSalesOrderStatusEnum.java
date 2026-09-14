@@ -38,7 +38,10 @@ public enum ZcSalesOrderStatusEnum {
     FAHUO("已发货"),
 
     /** 完成：订单履约结束 */
-    COMPLETE("完成");
+    COMPLETE("完成"),
+
+    /** 废弃：订单标记废弃，终止履约且禁止查看 */
+    DISCARDED("废弃");
 
     /** 中文名称 */
     private final String label;

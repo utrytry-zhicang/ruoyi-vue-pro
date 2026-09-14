@@ -199,6 +199,15 @@ public class ZcSalesOrderController {
         return success(true);
     }
 
+    @PutMapping("/discard")
+    @Operation(summary = "废弃销售订单")
+    @Parameter(name = "id", description = "销售订单 ID", required = true)
+    @PreAuthorize("@ss.hasPermission('zc:sales-order:update')")
+    public CommonResult<Boolean> discardSalesOrder(@RequestParam("id") Long id) {
+        salesOrderService.discardSalesOrder(id);
+        return success(true);
+    }
+
     @GetMapping("/statistics/customer")
     @Operation(summary = "按客户统计已确认订单（指定确认时间范围内，汇总各客户订单数、订单金额、已收金额、未收金额）")
     @PreAuthorize("@ss.hasPermission('zc:sales-order:query')")

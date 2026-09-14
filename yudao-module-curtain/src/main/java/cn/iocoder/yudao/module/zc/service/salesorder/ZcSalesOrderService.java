@@ -116,6 +116,15 @@ public interface ZcSalesOrderService {
     void completeSalesOrder(Long id);
 
     /**
+     * 废弃销售订单
+     *
+     * <p>将订单状态变更为 DISCARDED（废弃），终止履约且禁止查看。</p>
+     *
+     * @param id 销售订单 ID
+     */
+    void discardSalesOrder(Long id);
+
+    /**
      * 标记销售订单为加急
      *
      * <p>将订单的 is_expedited 设置为 true，不限当前订单状态。</p>

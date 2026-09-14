@@ -647,6 +647,30 @@ public class ZcSalesOrderServiceImpl implements ZcSalesOrderService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    @LogRecord(type = ZC_SALES_ORDER_TYPE, subType = ZC_SALES_ORDER_DISCARD_SUB_TYPE, bizNo = "{{#id}}",
+            success = ZC_SALES_ORDER_DISCARD_SUCCESS)
+    public void discardSalesOrder(Long id) {
+        // 1. 校验订单存在，且未重复废弃
+        ZcSalesOrderDO order = validateSalesOrderExists(id);
+        if (ZcSalesOrderStatusEnum.DISCARDED.name().equals(order.getStatus())) {
+            throw exception(SALES_ORDER_ALREADY_DISCARDED);
+        }
+
+        // 2. 更新订单状态为废弃
+        salesOrderMapper.update(null, Wrappers.<ZcSalesOrderDO>lambdaUpdate()
+                .set(ZcSalesOrderDO::getStatus, ZcSalesOrderStatusEnum.DISCARDED.name())
+                .eq(ZcSalesOrderDO::getId, id));
+
+        // 3. 同步更新子行状态
+        salesOrderCurtainMapper.updateStatusByOrderId(id, ZcSalesOrderStatusEnum.DISCARDED.name());
+        salesOrderProductMapper.updateStatusByOrderId(id, ZcSalesOrderStatusEnum.DISCARDED.name());
+
+        // 记录操作日志上下文
+        LogRecordContext.putVariable("orderNo", order.getOrderNo());
+    }
+
+    @Override
     @LogRecord(type = ZC_SALES_ORDER_TYPE, subType = ZC_SALES_ORDER_MARK_EXPEDITED_SUB_TYPE, bizNo = "{{#orderId}}",
             success = ZC_SALES_ORDER_MARK_EXPEDITED_SUCCESS)
     public void markExpedited(Long orderId) {
@@ -684,7 +708,11 @@ public class ZcSalesOrderServiceImpl implements ZcSalesOrderService {
 
     @Override
     public ZcSalesOrderDO getSalesOrder(Long id) {
-        return salesOrderMapper.selectById(id);
+        ZcSalesOrderDO order = salesOrderMapper.selectById(id);
+        if (order != null && ZcSalesOrderStatusEnum.DISCARDED.name().equals(order.getStatus())) {
+            throw exception(SALES_ORDER_DISCARDED_CANNOT_VIEW);
+        }
+        return order;
     }
 
     @Override
@@ -710,6 +738,9 @@ public class ZcSalesOrderServiceImpl implements ZcSalesOrderService {
         ZcSalesOrderRespVO orderVO = salesOrderMapper.selectVOById(orderId);
         if (orderVO == null) {
             throw exception(SALES_ORDER_NOT_EXISTS);
+        }
+        if (ZcSalesOrderStatusEnum.DISCARDED.name().equals(orderVO.getStatus())) {
+            throw exception(SALES_ORDER_DISCARDED_CANNOT_VIEW);
         }
 
         // 3. 查询该订单下所有窗帘行

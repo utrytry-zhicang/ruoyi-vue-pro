@@ -179,5 +179,9 @@ public interface ErrorCodeConstants {
     ErrorCode CUSTOMER_IMPORT_LIST_IS_EMPTY = new ErrorCode(100078, "导入客户列表不能为空");
     /** 工序记录定位 ID 与订单层级不一致 */
     ErrorCode ORDER_PROCESS_RECORD_SCOPE_MISMATCH = new ErrorCode(100083, "工序记录定位 ID 层级不一致，请检查窗帘/结构/用料关联");
+    /** 废弃的订单禁止查看 */
+    ErrorCode SALES_ORDER_DISCARDED_CANNOT_VIEW = new ErrorCode(100084, "废弃订单禁止查看");
+    /** 订单已被废弃，禁止重复废弃操作 */
+    ErrorCode SALES_ORDER_ALREADY_DISCARDED = new ErrorCode(100085, "订单已废弃，请勿重复操作");
 }
 

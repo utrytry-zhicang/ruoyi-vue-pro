@@ -184,6 +184,9 @@ public class ZcSalesOrderProductServiceImpl implements ZcSalesOrderProductServic
         if (orderVO == null) {
             throw exception(SALES_ORDER_NOT_EXISTS);
         }
+        if (ZcSalesOrderStatusEnum.DISCARDED.name().equals(orderVO.getStatus())) {
+            throw exception(SALES_ORDER_DISCARDED_CANNOT_VIEW);
+        }
 
         // 2. SQL JOIN 查产品行（含产品名称、批次号），结果直接映射到 VO
         List<ZcSalesOrderProductLineRespVO> lines = salesOrderProductMapper.selectProductLinesWithVOByOrderId(id);

@@ -208,6 +208,8 @@ public interface LogRecordConstants {
     String ZC_SALES_ORDER_CANCEL_EXPEDITED_SUCCESS = "取消了销售订单【{{#orderNo}}】的加急标记";
     String ZC_SALES_ORDER_COMPLETE_SUB_TYPE = "完成销售订单";
     String ZC_SALES_ORDER_COMPLETE_SUCCESS = "完成了销售订单【{{#orderNo}}】";
+    String ZC_SALES_ORDER_DISCARD_SUB_TYPE = "废弃销售订单";
+    String ZC_SALES_ORDER_DISCARD_SUCCESS = "废弃了销售订单【{{#orderNo}}】";
     String ZC_SALES_ORDER_FABRIC_CREATE_SUB_TYPE = "创建面单（嵌套结构）";
     String ZC_SALES_ORDER_FABRIC_CREATE_SUCCESS = "创建了面单【{{#salesOrder.orderNo}}】";
     String ZC_SALES_ORDER_FABRIC_UPDATE_SUB_TYPE = "更新面单（嵌套结构）";
