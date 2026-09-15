@@ -16,6 +16,9 @@ public enum ZcCustomerBalanceBizTypeEnum {
     /** 取消确认回退：撤销订单确认时退回余额 */
     ORDER_UNCONFIRM("取消确认回退"),
 
+    /** 订单废弃退回：订单废弃时退回未支付的已扣减余额 */
+    ORDER_DISCARD("订单废弃退回"),
+
     /** 订单更新调整：订单金额变更时补差额 */
     ORDER_CHANGE("订单更新调整"),
 

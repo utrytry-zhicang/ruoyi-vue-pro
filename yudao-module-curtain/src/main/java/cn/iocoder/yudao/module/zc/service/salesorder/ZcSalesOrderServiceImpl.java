@@ -657,12 +657,41 @@ public class ZcSalesOrderServiceImpl implements ZcSalesOrderService {
             throw exception(SALES_ORDER_ALREADY_DISCARDED);
         }
 
-        // 2. 更新订单状态为废弃
+        // 2. 已确认且未支付/部分支付的订单：将未支付的差额（订单金额 - 已收金额）退回客户余额
+        // （已支付的订单不做处理；未确认的订单之前未扣余额，亦无需处理）
+        boolean isPaid = ZcSalesOrderPayStatusEnum.PAID.name().equals(order.getPayStatus());
+        if (!isPaid && order.getConfirmTime() != null && order.getCustomerId() != null) {
+            BigDecimal amount = order.getAmount() != null ? order.getAmount() : BigDecimal.ZERO;
+            BigDecimal amountReceived = order.getAmountReceived() != null ? order.getAmountReceived() : BigDecimal.ZERO;
+            BigDecimal unpaidDiff = amount.subtract(amountReceived);
+
+            if (unpaidDiff.compareTo(BigDecimal.ZERO) > 0) {
+                ZcCustomerDO customer = customerService.getCustomer(order.getCustomerId());
+                BigDecimal balanceBefore = customer != null && customer.getBalance() != null
+                        ? customer.getBalance() : BigDecimal.ZERO;
+                BigDecimal balanceAfter = balanceBefore.add(unpaidDiff);
+
+                customerService.adjustBalance(order.getCustomerId(), unpaidDiff);
+
+                customerBalanceLogService.createLog(ZcCustomerBalanceLogDO.builder()
+                        .customerId(order.getCustomerId())
+                        .changeAmount(unpaidDiff)
+                        .balanceBefore(balanceBefore)
+                        .balanceAfter(balanceAfter)
+                        .bizType(ZcCustomerBalanceBizTypeEnum.ORDER_DISCARD.name())
+                        .refType(ZcRefTypeEnum.SALES_ORDER.name())
+                        .refId(order.getId())
+                        .refNo(order.getOrderNo())
+                        .build());
+            }
+        }
+
+        // 3. 更新订单状态为废弃
         salesOrderMapper.update(null, Wrappers.<ZcSalesOrderDO>lambdaUpdate()
                 .set(ZcSalesOrderDO::getStatus, ZcSalesOrderStatusEnum.DISCARDED.name())
                 .eq(ZcSalesOrderDO::getId, id));
 
-        // 3. 同步更新子行状态
+        // 4. 同步更新子行状态
         salesOrderCurtainMapper.updateStatusByOrderId(id, ZcSalesOrderStatusEnum.DISCARDED.name());
         salesOrderProductMapper.updateStatusByOrderId(id, ZcSalesOrderStatusEnum.DISCARDED.name());
 
