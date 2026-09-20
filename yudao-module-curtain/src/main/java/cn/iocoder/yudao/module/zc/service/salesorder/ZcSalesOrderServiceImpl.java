@@ -762,6 +762,12 @@ public class ZcSalesOrderServiceImpl implements ZcSalesOrderService {
     }
 
     @Override
+    public Long getTodayDeliveryCustomerCount() {
+        Long count = salesOrderMapper.selectTodayDeliveryCustomerCount(LocalDate.now());
+        return count != null ? count : 0L;
+    }
+
+    @Override
     public ZcSalesOrderDetailRespVO getSalesOrderDetail(Long orderId) {
         // 1. 查询订单主表信息（含客户名、物流名、创建人名等关联字段）
         ZcSalesOrderRespVO orderVO = salesOrderMapper.selectVOById(orderId);

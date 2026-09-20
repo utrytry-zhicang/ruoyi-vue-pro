@@ -103,4 +103,13 @@
         ORDER BY total_amount DESC
     </select>
 
+    <select id="selectTodayDeliveryCustomerCount" resultType="java.lang.Long">
+        SELECT COUNT(DISTINCT customer_id)
+        FROM zc_sales_order
+        WHERE deleted = 0
+          AND delivery_date = #{today}
+          AND customer_id IS NOT NULL
+          AND (status IS NULL OR status != 'DISCARDED')
+    </select>
+
 </mapper>

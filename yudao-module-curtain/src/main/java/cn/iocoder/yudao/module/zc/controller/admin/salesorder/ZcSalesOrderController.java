@@ -224,6 +224,13 @@ public class ZcSalesOrderController {
         return success(salesOrderService.getMaterialProductStatistics(reqVO));
     }
 
+    @GetMapping("/today-delivery-customer-count")
+    @Operation(summary = "获得今日需要发货的客户数")
+    @PreAuthorize("@ss.hasPermission('zc:sales-order:query')")
+    public CommonResult<Long> getTodayDeliveryCustomerCount() {
+        return success(salesOrderService.getTodayDeliveryCustomerCount());
+    }
+
     @GetMapping("/export-excel")
     @Operation(summary = "导出销售订单 Excel")
     @PreAuthorize("@ss.hasPermission('zc:sales-order:export')")

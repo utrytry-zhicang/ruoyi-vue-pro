@@ -1,6 +1,7 @@
 package cn.iocoder.yudao.module.zc.dal.mysql.salesorder;
 
 import java.util.*;
+import java.time.LocalDate;
 
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.mybatis.core.mapper.BaseMapperX;
@@ -56,5 +57,13 @@ public interface ZcSalesOrderMapper extends BaseMapperX<ZcSalesOrderDO> {
                 .set(ZcSalesOrderDO::getStatus, status)
                 .eq(ZcSalesOrderDO::getId, id));
     }
+
+    /**
+     * 查询指定交付日期的独立客户总数（排除已废弃订单）
+     *
+     * @param today 交付日期
+     * @return 客户数
+     */
+    Long selectTodayDeliveryCustomerCount(@Param("today") LocalDate today);
 
 }

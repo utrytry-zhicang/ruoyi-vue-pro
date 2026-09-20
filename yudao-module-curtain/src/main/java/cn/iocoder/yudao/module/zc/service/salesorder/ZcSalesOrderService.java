@@ -198,4 +198,11 @@ public interface ZcSalesOrderService {
     List<ZcSalesOrderMaterialProductStatisticsRespVO> getMaterialProductStatistics(
             @Valid ZcSalesOrderCustomerStatisticsReqVO reqVO);
 
+    /**
+     * 获得今日需要发货的客户数（交付日期等于今天且未废弃订单的去重客户总数）
+     *
+     * @return 客户数
+     */
+    Long getTodayDeliveryCustomerCount();
+
 }
