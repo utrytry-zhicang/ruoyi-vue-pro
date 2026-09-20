@@ -26,6 +26,12 @@ public class ZCSalesOrderMaterialPageReqVO extends PageParam {
     @Schema(description = "产品版本编号", example = "2048")
     private Long versionId;
 
+    @Schema(description = "产品编号", example = "1024")
+    private Long productId;
+
+    @Schema(description = "规格", example = "2.8m")
+    private String spec;
+
     @Schema(description = "组件类型编号", example = "1024")
     private Long elementId;
 

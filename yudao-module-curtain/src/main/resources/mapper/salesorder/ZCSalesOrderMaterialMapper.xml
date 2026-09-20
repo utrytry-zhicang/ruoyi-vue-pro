@@ -24,6 +24,12 @@
         <if test="reqVO.versionId != null">
             AND t2.version_id = #{reqVO.versionId}
         </if>
+        <if test="reqVO.productId != null">
+            AND t1.product_id = #{reqVO.productId}
+        </if>
+        <if test="reqVO.spec != null and reqVO.spec != ''">
+            AND t1.spec = #{reqVO.spec}
+        </if>
         <if test="reqVO.elementId != null">
             AND t1.element_id = #{reqVO.elementId}
         </if>
