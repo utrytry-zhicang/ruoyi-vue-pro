@@ -111,8 +111,8 @@ public class ZcOrderProcessRecordController {
     }
 
     @GetMapping("/today-user-material-stat")
-    @Operation(summary = "获取当日所有员工对应节点的用料统计",
-            description = "统计当日完成状态（status=1）的所有员工工序记录，按员工与节点分组返回用料统计")
+    @Operation(summary = "获取指定时间范围内所有员工对应节点的用料统计",
+            description = "统计指定时间范围内完成状态（status=1）的所有员工工序记录，按员工与节点分组返回用料统计")
     @Parameters({
             @Parameter(name = "beginCreateTime", description = "创建时间范围（开始），不传默认当日零点"),
             @Parameter(name = "endCreateTime", description = "创建时间范围（结束），不传默认当日23:59:59")

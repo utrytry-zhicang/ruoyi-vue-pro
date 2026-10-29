@@ -99,7 +99,7 @@ public interface ZcOrderProcessRecordService {
                                                                           LocalDateTime endCreateTime);
 
     /**
-     * 获取当日（或指定时间范围）所有员工在各自对应工序节点下的用料统计
+     * 获取指定时间范围内所有员工在各自对应工序节点下的用料统计
      *
      * @param beginCreateTime 创建时间范围（开始），若 null 默认当日零点
      * @param endCreateTime   创建时间范围（结束），若 null 默认当日 23:59:59
