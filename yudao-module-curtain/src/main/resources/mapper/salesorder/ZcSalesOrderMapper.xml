@@ -97,6 +97,7 @@
         FROM zc_sales_order t1
         LEFT JOIN zc_customer t2 ON t1.customer_id = t2.id AND t2.deleted = 0
         WHERE t1.deleted = 0
+          AND (t1.status IS NULL OR t1.status != 'DISCARDED')
           AND t1.confirm_time IS NOT NULL
           AND t1.confirm_time BETWEEN #{reqVO.confirmTime[0]} AND #{reqVO.confirmTime[1]}
         GROUP BY t1.customer_id, t2.`name`
